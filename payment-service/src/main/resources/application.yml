@@ -16,7 +16,7 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
   kafka:
-    bootstrap-server: ${KAFKA_BROKER:localhost:9092}
+    bootstrap-servers: ${KAFKA_BROKER:localhost:9092}
     topic:
       orchestrator: orchestrator
       payment-success: payment-success

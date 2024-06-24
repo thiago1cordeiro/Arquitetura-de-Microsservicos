@@ -1,4 +1,4 @@
-package br.com.microservices.orchestrated.inventoryservice.kafka;
+package br.com.microservices.orchestrated.paymentservice.config.kafka;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.admin.NewTopic;
@@ -27,7 +27,7 @@ public class KafkaConfig {
     private static final Integer PARTITION_COUNT = 1;
     private static final Integer REPLICA_COUNT = 1;
     
-    @Value("${spring.kafka.bootstrap-server}")
+    @Value("${spring.kafka.bootstrap-servers}")
     private String bootstrapServers;
     @Value("${spring.kafka.consumer.group-id}")
     private String groupId;
@@ -36,10 +36,10 @@ public class KafkaConfig {
     
     @Value("${spring.kafka.topic.orchestrator}")
     private String orchestratorTopic;
-    @Value("${spring.kafka.topic.inventory-success}")
-    private String inventorySuccessTopic;
-    @Value("${spring.kafka.topic.inventory-fail}")
-    private String inventoryFailTopic;
+    @Value("${spring.kafka.topic.payment-success}")
+    private String paymentSuccessTopic;
+    @Value("${spring.kafka.topic.payment-fail}")
+    private String paymentFailTopic;
     
     @Bean
     public ConsumerFactory<String, String> consumerFactory(){
@@ -73,6 +73,11 @@ public class KafkaConfig {
         return props;
     }
     
+    @Bean
+    public KafkaTemplate<String, String> kafkaTemplate(ProducerFactory<String, String> producerFactory){
+        return new KafkaTemplate<>(producerFactory());
+    }
+    
     private NewTopic buildTopic(String name){
         return TopicBuilder
                 .name(name)
@@ -82,22 +87,17 @@ public class KafkaConfig {
     }
     
     @Bean
-    public KafkaTemplate<String, String> kafkaTemplate(ProducerFactory<String, String> producerFactory){
-        return new KafkaTemplate<>(producerFactory());
-    }
-    
-    @Bean
     public NewTopic orchestratorTopic(){
         return buildTopic(orchestratorTopic);
     }
     
     @Bean
-    public NewTopic inventorySuccessTopic(){
-        return buildTopic(inventorySuccessTopic);
+    public NewTopic paymentSuccessTopic(){
+        return buildTopic(paymentSuccessTopic);
     }
     
     @Bean
-    public NewTopic inventoryFailTopic(){
-        return buildTopic(inventoryFailTopic);
+    public NewTopic paymentFailTopic(){
+        return buildTopic(paymentFailTopic);
     }
 }
