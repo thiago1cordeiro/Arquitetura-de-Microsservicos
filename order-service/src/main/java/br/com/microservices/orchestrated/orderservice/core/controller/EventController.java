@@ -17,6 +17,7 @@ public class EventController {
     
     private final EventService eventService;
     
+    @GetMapping
     public Event findByFilters(EventFilters eventFilters) {
         return eventService.findByFilters(eventFilters);
     }
