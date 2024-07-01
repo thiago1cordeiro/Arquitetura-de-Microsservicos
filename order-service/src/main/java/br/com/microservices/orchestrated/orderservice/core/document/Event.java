@@ -15,12 +15,12 @@ import java.util.List;
 public class Event {
     
     private String id;
-    private String tractionId;
+    private String transactionId;
     private String orderId;
     private Order payload;
     private String source;
     private String status;
-    private List<String> eventHistory;
+    private List<History> eventHistory;
     private LocalDateTime createdAt;
     
 }
