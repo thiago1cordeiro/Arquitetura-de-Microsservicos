@@ -1,5 +1,6 @@
 package br.com.microservices.orchestrated.orchestratorservice.core.consumer;
 
+import br.com.microservices.orchestrated.orchestratorservice.core.service.OrchestratorService;
 import br.com.microservices.orchestrated.orchestratorservice.core.utils.JsonUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 public class SagaOrchestratorConsumer {
     
+    private final OrchestratorService orchestratorService;
     private final JsonUtil jsonUtil;
     
     @KafkaListener(
@@ -22,7 +24,7 @@ public class SagaOrchestratorConsumer {
         
         var event = jsonUtil.toEvent(payload);
         
-        log.info(event.toString());
+        orchestratorService.startSaga(event);
     }
     
     @KafkaListener(
@@ -34,7 +36,7 @@ public class SagaOrchestratorConsumer {
         
         var event = jsonUtil.toEvent(payload);
         
-        log.info(event.toString());
+        orchestratorService.continueSaga(event);
     }
     
     @KafkaListener(
@@ -46,7 +48,7 @@ public class SagaOrchestratorConsumer {
         
         var event = jsonUtil.toEvent(payload);
         
-        log.info(event.toString());
+        orchestratorService.finishSagaSuccess(event);
     }
     
     @KafkaListener(
@@ -58,7 +60,7 @@ public class SagaOrchestratorConsumer {
         
         var event = jsonUtil.toEvent(payload);
         
-        log.info(event.toString());
+        orchestratorService.finishSagaFail(event);
     }
     
 }
